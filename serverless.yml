@@ -1,10 +1,6 @@
 service:
   name: aws-nodejs-typescript
 
-custom:
-  webpack:
-    webpackConfig: ./functions/webpack.config.js
-
 plugins:
   - serverless-webpack
 
