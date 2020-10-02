@@ -2,9 +2,9 @@
   "name": "aws-nodejs-typescript",
   "version": "1.0.0",
   "description": "Serverless webpack example using Typescript",
-  "main": "handler.js",
+  "main": "index.js",
   "scripts": {
-    "deploy": "cd ./in/hello/ && sls deploy"
+    "deploy": "sls deploy"
   },
   "devDependencies": {
     "@types/aws-lambda": "0.0.22",
