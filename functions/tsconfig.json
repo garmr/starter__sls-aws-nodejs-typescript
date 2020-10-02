@@ -13,9 +13,10 @@
   "forceConsistentCasingInFileNames": true,
   "importHelpers": true,
   "incremental": true,
+  "tsBuildInfoFile": "./buildcache/",
   "watch": true,
   "target": "es2017",
-  "outDir": "lib"
+  "outDir": "./lib"
 },
 "include": [
   "./**/*.ts"
