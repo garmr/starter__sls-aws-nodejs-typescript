@@ -20,7 +20,7 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 ## Requirements
 
 ### Local
-* install NodeJS (if needed)
+* [install NodeJS](https://nodejs.org/en/download/current/) (if needed)
 * install serverless (if needed) : `npm install -g serverless`
 * setup git `git config core.eol lf && git config core.autocrlf input`
 
