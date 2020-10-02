@@ -12,6 +12,7 @@ all inclusive starter for serverless>aws>nodejs>typescript projects
 * IAM role to use to deploy, see [Minimum credential set for Serverless Framework]
 (https://gist.github.com/ServerlessBot/7618156b8671840a539f405dea2704c8)
 ### Github
+* use .github\worflows\deploy.yaml to define a github action
 * define AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secret
 
 ## Project setup
