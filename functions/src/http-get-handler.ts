@@ -8,7 +8,7 @@ export class HTTPGetHandler {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: message,
+        message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully !',
         event: event
       })
     };
