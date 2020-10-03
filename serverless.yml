@@ -2,9 +2,17 @@ service:
   name: aws-nodejs-typescript
 
 custom:
-  webpack:
-    includeModules: true
-    excludeFiles: .*.spec.ts
+  webpack: # https://www.serverless.com/plugins/serverless-webpack
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: # true to enable auto-packing of external modules
+      forceExclude:
+        - aws-sdk
+    excludeFiles: functions/test/**/*.spec.ts # Provide a glob for files to ignore
+    series: true # run Webpack in series, useful for large projects. Defaults to false.
+    packager: 'npm' # Packager that will be used to package your external modules
+
+package:
+    individually: true
 
 plugins:
   - serverless-webpack
@@ -14,8 +22,6 @@ provider:
   runtime: nodejs12.x
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
-  environment:
-    AWS_NODEJS_CONNECTION_REUSE_ENABLED: true
 
 functions:
   hello:

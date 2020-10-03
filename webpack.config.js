@@ -4,11 +4,9 @@ const nodeExternals = require('webpack-node-externals');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
+  entry: slsw.lib.entries,
   context: __dirname,
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
-  entry: {
-    app: slsw.lib.entries
-  },
   devtool: slsw.lib.webpack.isLocal ? 'cheap-module-eval-source-map' : 'source-map',
   resolve: {
     extensions: ['.mjs', '.json', '.ts'],
@@ -21,7 +19,9 @@ module.exports = {
     filename: '[name].js',
   },
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals()
+  ],
   module: {
     rules: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
