@@ -41,12 +41,10 @@ module.exports = {
     ],
   },
   plugins: [
-    // new ForkTsCheckerWebpackPlugin({
-    //   eslint: {
-    //     options: {
-    //       cache: true
-    //     }
-    //   }
-    // })
+    new ForkTsCheckerWebpackPlugin({
+      eslint: {
+        files: './src/**/*.{ts,tsx,js,jsx}' // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+      }
+    })
   ],
 };
