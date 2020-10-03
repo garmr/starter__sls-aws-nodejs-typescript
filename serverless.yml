@@ -8,7 +8,6 @@ custom:
       forceExclude:
         - aws-sdk
     excludeFiles: functions/test/**/*.spec.ts # Provide a glob for files to ignore
-    series: true # run Webpack in series, useful for large projects. Defaults to false.
 
 package:
     individually: true
