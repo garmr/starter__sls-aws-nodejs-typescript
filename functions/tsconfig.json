@@ -16,7 +16,8 @@
   "tsBuildInfoFile": "./buildcache/",
   "watch": true,
   "target": "es2018",
-  "outDir": "./lib"
+  "outDir": "./lib",
+  "importsNotUsedAsValues": "preserve"
 },
 "include": [
   "./**/*.ts"
