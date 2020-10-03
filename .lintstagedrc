@@ -1,6 +1,6 @@
 {
-  "./functions/**/*.ts": ["prettier --write", "git add"],
-  "webpack.config.js": ["prettier --write", "git add"],
-  "package.json": ["prettier --write", "git add"],
-  "*.md": ["prettier --write", "git add"]
+  "./functions/**/*.ts": ["prettier --write"],
+  "webpack.config.js": ["prettier --write"],
+  "package.json": ["prettier --write"],
+  "*.md": ["prettier --write"]
 }
