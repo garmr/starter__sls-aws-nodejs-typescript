@@ -17,6 +17,7 @@
     "@types/node": "^8.0.57",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
+    "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.766.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
