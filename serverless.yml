@@ -4,7 +4,7 @@ service:
 custom:
   # https://www.serverless.com/plugins/serverless-webpack
   webpack:
-    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    webpackConfig: './webpack.config.js' # Name of webpack configuration file
     includeModules:
       forceExclude:
         - aws-sdk
