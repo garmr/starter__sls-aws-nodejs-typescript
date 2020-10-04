@@ -1,7 +1,7 @@
 {
   "eslint": {
     "enabled": true,
-    "files": "./functions/src/**/*.{ts,tsx,js,jsx}"
+    "files": "./functions/**/*.{ts,tsx,js,jsx}"
   },
   "typescript": {
     "configFile": "./functions/tsconfig.json"
