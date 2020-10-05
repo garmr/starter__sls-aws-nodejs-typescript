@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Run tests
-        run: npm run-script test
+        run: npm test
       - name: Send message to Slack API
         uses: archive/github-actions-slack@v1.0.3
         with:
