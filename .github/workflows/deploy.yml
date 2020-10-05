@@ -32,4 +32,3 @@ jobs:
           slack-channel: continue
           slack-text: Hello! Something is burning! Or not...
           slack-optional-icon_emoji: ':fire:'
-          slack-optional-as_user: false
