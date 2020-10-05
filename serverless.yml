@@ -1,6 +1,9 @@
 service:
-  name: aws-nodejs-typescript
+  name: producer-template
 
+environment:
+  APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}
+  VERSION: 0.0.1
 custom:
   # https://www.serverless.com/plugins/serverless-webpack
   webpack:
@@ -13,7 +16,7 @@ custom:
     packager: 'npm' # Packager that will be used to package your external modules
 
 package:
-    individually: true
+  individually: true
 
 plugins:
   - serverless-webpack
@@ -25,13 +28,13 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
 
 functions:
-  status:
+  productTemplate_status:
     handler: functions/status/src/index.handler
     events:
       - http:
           method: get
           path: status
-  version:
+  productTemplate_version:
     handler: functions/version/src/index.handler
     events:
       - http:
