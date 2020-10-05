@@ -1,10 +1,11 @@
-name: Deploy
+name: Pull Request
 on:
-  push:
+  pull_request:
     branches:
       - master
 jobs:
-  deploy:
+  test:
+    name: Run tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,14 +18,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm install
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Serverless Deploy
-        run: npm run-script deploy
+      - name: Run tests
+        run: npm run-script test
       - name: Send message to Slack API
         uses: archive/github-actions-slack@v1.0.3
         with:
