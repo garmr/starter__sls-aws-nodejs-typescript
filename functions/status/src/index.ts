@@ -1,8 +1,8 @@
 import 'source-map-support/register';
-import { APIGatewayEvent, Callback, Context, Handler } from 'aws-lambda';
+import { Handler } from 'aws-lambda';
 import { HTTPGetHandler } from './http-get-handler';
 
-export const handler: Handler = async (event: APIGatewayEvent, context: Context, callback: Callback): Promise<any> => {
+export const handler: Handler = async (): Promise<any> => {
   const httpGetHandler = new HTTPGetHandler();
   const response = await httpGetHandler.handle();
   return {

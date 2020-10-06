@@ -1,10 +1,11 @@
-name: Deploy
+name: Pull Request
 on:
-  push:
+  pull_request:
     branches:
       - master
 jobs:
-  deploy:
+  test:
+    name: Run tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,19 +18,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm install
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+      - name: Run tests
+        id: test
+        run: npm test
       - name: Send success message to Slack API
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Code deployed successfully
+          slack-text: Tests performed successfully
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Send failure message to Slack API
         if: ${{ failure() }}
@@ -37,5 +35,5 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Code failed to deploy
+          slack-text: Tests failed
           slack-optional-icon_emoji: ':gobelin_japonais:'
