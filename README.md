@@ -1,7 +1,10 @@
 # Starter for serverless>aws>nodejs>typescript
 
-all inclusive starter for serverless>aws>nodejs>typescript projects
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=garmr_starter__sls-aws-nodejs-typescript&metric=alert_status)](https://sonarcloud.io/dashboard?id=garmr_starter__sls-aws-nodejs-typescript)
+> all inclusive starter for serverless>aws>nodejs>typescript projects
+
+| Quality | Vulnerabilities |
+| --- | :-: |
+| [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=garmr_starter__sls-aws-nodejs-typescript&metric=alert_status)](https://sonarcloud.io/dashboard?id=garmr_starter__sls-aws-nodejs-typescript) | [![Known Vulnerabilities](https://snyk.io/test/github/{username}/{repo}/badge.svg)](https://snyk.io/test/github/{username}/{repo}) |
 
 ## Best practices
 
@@ -14,8 +17,11 @@ all inclusive starter for serverless>aws>nodejs>typescript projects
 ## Opiniated
 
 All files related to any one function should be in a single folder, Typescript transpilable code will be hosted under a directory named `src`.
+
 Lambda itself will always be named `index.ts` while business logic will be accessible using a file named `(*-)?handler.ts` as per `dash-case` convention.
+
 For example, if using [CoR design pattern](https://refactoring.guru/design-patterns/chain-of-responsibility), CoR handlers will be named after their responsibility, exemple `http-put-handler.ts`.
+
 Other will follow this [TypeScript Style Guide and Coding Conventions](https://github.com/basarat/typescript-book/blob/master/docs/styleguide/styleguide.md) - `PascalCase` for Class name, `camelCase` for properties and method and so on.
 
 ## Requirements
@@ -32,7 +38,7 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 
 ### Github
 
-- define AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secret
+- define AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secret to use with [aws-actions/configure-aws-credentials@v1](https://github.com/aws-actions/configure-aws-credentials) action
 
 ## Project setup
 
@@ -45,11 +51,6 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 `sls create --template aws-nodejs-typescript --path <service path to function directory>`
 
 ## References
-
-### confluence
-
-[Starter Serverless x Typescript x AWS Lambda](https://easiware.atlassian.net/wiki/spaces/IP/blog/2020/09/01/2031321093/Starter+Serverless+x+Typescript+x+AWS+Lambda)
-[AWS Lambda x NodeJS x Typescript](https://easiware.atlassian.net/wiki/spaces/IP/blog/2020/09/10/2055667722/AWS+Lambda+x+NodeJS+xTypescript)
 
 ### serverless
 

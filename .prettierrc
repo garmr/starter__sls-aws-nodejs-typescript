@@ -12,7 +12,8 @@
     {
       "files": "*.md",
       "options": {
-        "singleQuote": false
+        "singleQuote": false,
+        "proseWrap": "never"
       }
     }
   ]

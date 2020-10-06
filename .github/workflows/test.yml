@@ -19,8 +19,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Run tests
+        id: test
         run: npm test
       - name: Send message to Slack API
+        if: always()
         uses: archive/github-actions-slack@v1.0.3
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
