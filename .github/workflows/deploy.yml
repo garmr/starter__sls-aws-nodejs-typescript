@@ -23,14 +23,19 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: Serverless Deploy
-        id: deploy
-        run: npm run-script deploy
-      - name: Send message to Slack API
+      - name: Send success message to Slack API
+        if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
-        if: always()
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
           slack-text: Hello! Something is burning! Or not...
-          slack-optional-icon_emoji: ':fire:'
+          slack-optional-icon_emoji: ':soleil_avec_visage:'
+      - name: Send failure message to Slack API
+        if: ${{ failure() }}
+        uses: archive/github-actions-slack@v1.0.3
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          slack-channel: continue
+          slack-text: Hello! Something is burning! Or not...
+          slack-optional-icon_emoji: ':gobelin_japonais:'
