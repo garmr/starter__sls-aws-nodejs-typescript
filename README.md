@@ -6,7 +6,7 @@
 | ------- | --------------- | :--------: |
 
 
-| [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=garmr_starter__sls-aws-nodejs-typescript&metric=alert_status)](https://sonarcloud.io/dashboard?id=garmr_starter__sls-aws-nodejs-typescript) ![JEST](https://github.com/garmr/starter__sls-aws-nodejs-typescript/workflows/test/badge.svg) | [![Known Vulnerabilities](https://snyk.io/test/github/{username}/{repo}/badge.svg)](https://snyk.io/test/github/{username}/{repo}) | ![AWS](https://github.com/garmr/starter__sls-aws-nodejs-typescript/workflows/deploy/badge.svg) |
+| [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=garmr_starter__sls-aws-nodejs-typescript&metric=alert_status)](https://sonarcloud.io/dashboard?id=garmr_starter__sls-aws-nodejs-typescript) [![JEST](https://github.com/garmr/starter__sls-aws-nodejs-typescript/workflows/test/badge.svg)](https://github.com/garmr/starter__sls-aws-nodejs-typescript) | [![Known Vulnerabilities](https://snyk.io/test/github/garmr/starter__sls-aws-nodejs-typescript/badge.svg)](https://snyk.io/test/github/{username}/{repo}) | [![AWS](https://github.com/garmr/starter__sls-aws-nodejs-typescript/workflows/deploy/badge.svg)](https://github.com/garmr/starter__sls-aws-nodejs-typescript) |
 
 ## Best practices
 
