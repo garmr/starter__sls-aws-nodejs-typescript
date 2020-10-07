@@ -1,9 +1,6 @@
 service:
   name: producer-template
 
-environment:
-  APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}
-  VERSION: 0.0.1
 custom:
   # https://www.serverless.com/plugins/serverless-webpack
   webpack:
@@ -11,6 +8,7 @@ custom:
     includeModules:
       forceExclude:
         - aws-sdk
+        - aws-lambda
     excludeFiles: functions/__tests__/**/*.spec.ts # Provide a glob for files to ignore
     series: true # run Webpack in series, useful for large projects. Defaults to false.
     packager: 'npm' # Packager that will be used to package your external modules
@@ -26,7 +24,9 @@ provider:
   runtime: nodejs12.x
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
-
+  environment:
+    APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}
+    VERSION: 0.0.1
 functions:
   productTemplate_status:
     handler: functions/status/src/index.handler

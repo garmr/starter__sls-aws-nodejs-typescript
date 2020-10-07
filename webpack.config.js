@@ -17,7 +17,7 @@ module.exports = {
     hints: false,
   },
   resolve: {
-    extensions: ['.mjs', '.json', '.ts'],
+    extensions: ['.mjs', '.json', '.ts', '.js'],
     symlinks: false,
     cacheWithContext: false,
   },
