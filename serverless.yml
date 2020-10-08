@@ -46,7 +46,7 @@ provider:
     APIG_DEPLOYMENT_ID: ${sls:instanceId}
     VERSION: ${self:custom.serviceVersion}
 functions:
-  producerTemplate_status10:
+  producerTemplate_1_0_status:
     name: producer-template-${opt:stage, self:provider.stage, 'dev'}-status
     description: # The description of your function.
     tags: # Function specific tags
@@ -57,7 +57,7 @@ functions:
       - http:
           method: get
           path: 1.0/status
-  producerTemplate_10_version:
+  producerTemplate_1_0_version:
     name: producer-template-${opt:stage, self:provider.stage, 'dev'}-version
     description: # The description of your function.
     tags: # Function specific tags
