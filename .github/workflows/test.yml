@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Branch name
-        run: echo running on branch ${GIT_BRANCH#*/}
+        run: echo running on branch ${BASE_BRANCH}
       - name: Install Dependencies
         run: npm ci
       - name: Run tests
@@ -39,12 +39,8 @@ jobs:
           slack-channel: continue
           slack-text: Tests failed
           slack-optional-icon_emoji: ':gobelin_japonais:'
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GIT_BRANCH#*/})"
-        id: extract_branch
       - name: Serverless Deploy
-        run: npm run-script deploy -- --stage=${{ steps.extract_branch.outputs.branch }}
+        run: npm run-script deploy -- --stage=${BASE_BRANCH}
       - name: Send deploy success message to Slack API
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
