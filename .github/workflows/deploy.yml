@@ -31,7 +31,7 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Code deployed successfully
+          slack-text: Deployed successfully to production
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Send failure message to Slack API
         if: ${{ failure() }}
@@ -39,5 +39,5 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Code failed to deploy
+          slack-text: Failed to deploy to production
           slack-optional-icon_emoji: ':gobelin_japonais:'
