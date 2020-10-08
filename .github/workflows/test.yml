@@ -44,7 +44,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Serverless Deploy
-        run: npm run-script deploy -- --stage=${github.event.pull_request.head.ref////_}
+        run: npm run-script deploy -- --stage=${REF////_}
+        env:
+          REF: ${{ github.event.pull_request.head.ref }}
       - name: Send deploy success message to Slack API
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
