@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Branch name
+        run: echo running on branch ${GITHUB_REF##*/}
       - name: Install Dependencies
         run: npm ci
       - name: Run tests
@@ -41,7 +43,6 @@ jobs:
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
-      - name: Deploy branch
       - name: Serverless Deploy
         run: npm run-script deploy -- --stage=${{ steps.extract_branch.outputs.branch }}
       - name: Send deploy success message to Slack API
