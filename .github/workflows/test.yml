@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Branch name
+        uses: nelonoel/branch-name@v1
         run: echo running on branch ${BASE_BRANCH}
       - name: Install Dependencies
         run: npm ci
@@ -40,6 +41,7 @@ jobs:
           slack-text: Tests failed
           slack-optional-icon_emoji: ':gobelin_japonais:'
       - name: Serverless Deploy
+        uses: nelonoel/branch-name@v1
         run: npm run-script deploy -- --stage=${BASE_BRANCH}
       - name: Send deploy success message to Slack API
         if: ${{ success() }}
