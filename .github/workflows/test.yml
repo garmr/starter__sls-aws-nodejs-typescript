@@ -44,26 +44,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Serverless Deploy
-        run: npm run-script deploy -- --stage=${{BASE_BRANCH}}
-        env:
-          BASE_BRANCH: ${{ github.base_ref }}
+        run: npm run-script deploy -- --stage=${{ github.base_ref }}
       - name: Send deploy success message to Slack API
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
-        env:
-          BASE_BRANCH: ${{ github.base_ref }}
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Deployed successfully to ${{BASE_BRANCH}}
+          slack-text: Deployed successfully to ${{ github.base_ref }}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Send deploy failure message to Slack API
         if: ${{ failure() }}
         uses: archive/github-actions-slack@v1.0.3
-        env:
-          BASE_BRANCH: ${{ github.base_ref }}
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Failed to deploy to ${{BASE_BRANCH}}
+          slack-text: Failed to deploy to ${{ github.base_ref }}
           slack-optional-icon_emoji: ':gobelin_japonais:'
