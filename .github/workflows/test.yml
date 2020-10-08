@@ -40,7 +40,6 @@ jobs:
           slack-text: Tests failed
           slack-optional-icon_emoji: ':gobelin_japonais:'
       - name: Serverless Deploy
-        uses: nelonoel/branch-name@v1
         run: npm run-script deploy -- --stage=${GITHUB_REF##*/}
       - name: Send deploy success message to Slack API
         if: ${{ success() }}
