@@ -16,9 +16,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Branch name
-        id: get_branch_name
-        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       - name: Install Dependencies
         run: npm ci
       - name: Run tests
@@ -47,20 +44,26 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Serverless Deploy
-        run: npm run-script deploy -- --stage=${{steps.get_branch_name.outputs.short_ref}}
+        run: npm run-script deploy -- --stage=${{BASE_BRANCH}}
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
       - name: Send deploy success message to Slack API
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Deployed successfully to ${{ steps.extract_branch.outputs.branch }}
+          slack-text: Deployed successfully to ${{BASE_BRANCH}}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Send deploy failure message to Slack API
         if: ${{ failure() }}
         uses: archive/github-actions-slack@v1.0.3
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Failed to deploy to ${{ steps.extract_branch.outputs.branch }}
+          slack-text: Failed to deploy to ${{BASE_BRANCH}}
           slack-optional-icon_emoji: ':gobelin_japonais:'
