@@ -17,7 +17,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
+        id: branch_name
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       - name: Install Dependencies
         run: npm ci
       - name: Run tests
@@ -46,7 +47,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Serverless Deploy
-        run: npm run-script deploy -- --stage=${GITHUB_REF##*/}
+        run: npm run-script deploy -- --stage=${{steps.vars.outputs.short_ref}}
       - name: Send deploy success message to Slack API
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
