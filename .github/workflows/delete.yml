@@ -23,8 +23,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: Serverless Deploy
-        run: npm run-script remove -- --stage=${REF////_}
+      - name: Serverless Remove
+        run: npm run-script remove -- --stage=${REF////-}
         env:
           REF: ${{ github.event.pull_request.head.ref }}
       - name: Send remove success message to Slack API
