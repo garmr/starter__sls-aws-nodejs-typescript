@@ -8,7 +8,8 @@
     "test:unit": "jest --colors ./functions/.*.spec.ts",
     "test:integration": "jest --colors ./functions/.*.integration.ts",
     "prettier": "prettier --write functions/**/*.ts",
-    "deploy": "sls deploy"
+    "deploy": "sls deploy",
+    "remove": "sls remove"
   },
   "husky": {
     "hooks": {
