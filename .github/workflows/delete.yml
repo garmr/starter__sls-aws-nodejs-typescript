@@ -27,7 +27,7 @@ jobs:
         run: npm run-script remove -- --stage=${REF////-}
         env:
           REF: ${{ github.event.pull_request.head.ref }}
-      - name: Notify UAT termination success
+      - name: Notify termination success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
