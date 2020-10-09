@@ -59,3 +59,7 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 ### github
 
 [Events that trigger workflows](https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows)
+
+### bash
+
+[String manipulation](https://tldp.org/LDP/abs/html/string-manipulation.html)
