@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   test:
-    name: Run tests
+    name: Run tests then deploy UAT
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,7 +21,7 @@ jobs:
       - name: Run tests
         id: test
         run: npm test
-      - name: Send test success message to Slack API
+      - name: Notify test success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
@@ -29,7 +29,7 @@ jobs:
           slack-channel: continue
           slack-text: Tests performed successfully
           slack-optional-icon_emoji: ':soleil_avec_visage:'
-      - name: Send test failure message to Slack API
+      - name: Notify test failure
         if: ${{ failure() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
@@ -43,19 +43,23 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: Serverless Deploy
+      - name: Deploy UAT
         run: npm run-script deploy -- --stage=${REF////-}
         env:
           REF: ${{ github.event.pull_request.head.ref }}
-      - name: Send deploy success message to Slack API
+      - name: Get UAT info
+        run: echo ::set-env name=SLS_OUTPUT::$(npm run-script info -- --stage=${REF////-})
+        env:
+          REF: ${{ github.event.pull_request.head.ref }}
+      - name: Notify UAT deployment completed successfully
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Deployed successfully to ${{ github.event.pull_request.head.ref }}
+          slack-text: Deployed successfully to ${{ github.event.pull_request.head.ref }} ${{ env.SLS_OUTPUT }}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
-      - name: Send deploy failure message to Slack API
+      - name: Notify UAT deployment failure
         if: ${{ failure() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
