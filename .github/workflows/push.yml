@@ -2,7 +2,7 @@ name: Push branch
 on:
   push:
     tags-ignore:
-      - v*
+      - '*'
 
 jobs:
   test:
