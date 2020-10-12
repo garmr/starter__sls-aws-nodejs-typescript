@@ -16,9 +16,8 @@ describe('Status producer', () => {
       const result = await unitUnderTest.handle();
 
       // Assert
-      expect(result).toHaveProperty('status');
-      expect(result.status).toHaveProperty('dependency1');
-      expect(result.status.dependency1).toBe('🟢');
+      expect(result).toHaveProperty('dependency1');
+      expect(result.dependency1).toBe('🟢');
     });
   });
 });
