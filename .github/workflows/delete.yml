@@ -26,10 +26,7 @@ jobs:
       - id: identify
         run: |
           export GIT_REF="${{ github.event.pull_request.head.ref  }}"
-
           echo "::set-output name=git_ref::${GIT_REF////-}"
-        outputs:
-          git_ref: ${{ steps.identify.outputs.git_ref }}
       - name: Terminate UAT
         run: npm run-script remove -- --stage=${REF:0:7}
         env:
