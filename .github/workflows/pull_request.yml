@@ -18,25 +18,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm ci
-      - name: Run tests
-        id: test
-        run: npm test
-      - name: Notify test success
-        if: ${{ success() }}
-        uses: archive/github-actions-slack@v1.0.3
-        with:
-          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          slack-channel: continue
-          slack-text: Tests performed successfully
-          slack-optional-icon_emoji: ':soleil_avec_visage:'
-      - name: Notify test failure
-        if: ${{ failure() }}
-        uses: archive/github-actions-slack@v1.0.3
-        with:
-          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          slack-channel: continue
-          slack-text: Tests failed
-          slack-optional-icon_emoji: ':gobelin_japonais:'
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -52,7 +33,8 @@ jobs:
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
       - name: Get UAT info
-        run: echo ::set-env name=SLS_OUTPUT::$(npm run-script info -- --stage=${REF:0:7} | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')
+        id: info
+        run: echo "::set-output name=sls_output::$(npm run-script info -- --stage=${REF:0:7} | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')"
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
       - name: Notify UAT deployment completed successfully
@@ -61,7 +43,7 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Deployed successfully to ${{ github.event.pull_request.head.ref }} ${{ env.SLS_OUTPUT }}
+          slack-text: Deployed successfully to ${{ github.event.pull_request.head.ref }} ${{  steps.info.outputs.sls_output }}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Notify UAT deployment failure
         if: ${{ failure() }}
