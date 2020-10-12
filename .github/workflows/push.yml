@@ -1,6 +1,9 @@
 name: Push branch
 on:
-  push: [branches]
+  push:
+    tags-ignore:
+      - v*
+
 jobs:
   test:
     runs-on: ubuntu-latest
