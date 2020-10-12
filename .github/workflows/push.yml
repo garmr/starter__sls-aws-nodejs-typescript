@@ -1,10 +1,12 @@
-name: Release tag
+name: Push branch
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - '*'
+      - '!master'
+
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,27 +19,22 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm ci
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - name: Deploy to production
-        run: npm run-script deploy
-      - name: Notify deployment completed successfully
+      - name: Run tests
+        id: test
+        run: npm test
+      - name: Notify test success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Deployed successfully to production
+          slack-text: Tests performed successfully
           slack-optional-icon_emoji: ':soleil_avec_visage:'
-      - name: Notify deployment failure
+      - name: Notify test failure
         if: ${{ failure() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Failed to deploy to production
+          slack-text: Tests failed
           slack-optional-icon_emoji: ':gobelin_japonais:'
