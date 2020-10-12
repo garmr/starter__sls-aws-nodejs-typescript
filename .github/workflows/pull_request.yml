@@ -43,14 +43,21 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+      - id: identify
+        run: |
+          export GIT_REF="${{ github.event.pull_request.head.ref  }}"
+
+          echo "::set-output name=git_ref::${GIT_REF////-}"
+        outputs:
+          git_ref: ${{ steps.identify.outputs.git_ref }}
       - name: Deploy UAT
-        run: npm run-script deploy -- --stage=${REF////-}
+        run: npm run-script deploy -- --stage=${REF:0:7}
         env:
-          REF: ${{ github.event.pull_request.head.ref }}
+          REF: ${{ steps.identify.outputs.git_ref }}
       - name: Get UAT info
-        run: echo ::set-env name=SLS_OUTPUT::$(npm run-script info -- --stage=${REF////-} | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')
+        run: echo ::set-env name=SLS_OUTPUT::$(npm run-script info -- --stage=${REF:0:7} | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')
         env:
-          REF: ${{ github.event.pull_request.head.ref }}
+          REF: ${{ steps.identify.outputs.git_ref }}
       - name: Notify UAT deployment completed successfully
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
