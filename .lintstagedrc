@@ -1,5 +1,5 @@
 {
-  "./functions/**/*.ts": ["prettier --write"],
+  "./functions/**/*.ts": ["prettier --write","eslint"],
   "webpack.config.js": ["prettier --write"],
   "package.json": ["prettier --write"],
   "*.md": ["prettier --write"]
