@@ -48,7 +48,7 @@ jobs:
         env:
           REF: ${{ github.event.pull_request.head.ref }}
       - name: Get UAT info
-        run: echo ::set-env name=SLS_OUTPUT::$(npm run-script info -- --stage=${REF////-})
+        run: echo ::set-env name=SLS_OUTPUT::$(npm run-script info -- --stage=${REF////-} | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')
         env:
           REF: ${{ github.event.pull_request.head.ref }}
       - name: Notify UAT deployment completed successfully
