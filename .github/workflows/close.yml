@@ -28,14 +28,14 @@ jobs:
           export GIT_REF="${{ github.event.pull_request.head.ref  }}"
           echo "::set-output name=git_ref::${GIT_REF////-}"
       - name: Terminate UAT
-        run: npm run-script remove -- --stage=${REF:0:7} > ./artifact.txt
+        run: npm run-script remove -- --stage=${REF:0:7} > ./remove.txt
         env:
           REF: ${{ github.event.pull_request.head.ref }}
-      - name: Archive deployment artifacts
+      - name: Archive terminate artifacts
         uses: actions/upload-artifact@v2
         with:
           name: terminate
-          path: ./artifact.txt
+          path: ./remove.txt
       - name: Notify termination success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3

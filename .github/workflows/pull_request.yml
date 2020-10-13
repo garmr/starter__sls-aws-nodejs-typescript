@@ -29,7 +29,7 @@ jobs:
           export GIT_REF="${{ github.event.pull_request.head.ref  }}"
           echo "::set-output name=git_ref::${GIT_REF////-}"
       - name: Deploy UAT
-        run: npm run-script deploy -- --stage=${REF:0:7}>./artifact.txt
+        run: npm run-script deploy -- --stage=${REF:0:7} > ./deploy.txt
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
       - name: Get UAT info
@@ -39,11 +39,12 @@ jobs:
           echo "::set-output name=sls_output::$(echo $sls_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')"
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
+      - run: echo ${{steps.info.outputs.sls_output}}
       - name: Archive deployment artifacts
         uses: actions/upload-artifact@v2
         with:
           name: deployment
-          path: ./artifact.txt
+          path: ./deploy.txt
       - name: Notify UAT deployment completed successfully
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
@@ -51,7 +52,7 @@ jobs:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
           slack-text: |
-            Deployed successfully to ${{ github.event.pull_request.head.ref }} ${{  steps.info.outputs.sls_output }}
+            Deployed successfully to ${{ github.event.pull_request.head.ref }} ${{ steps.info.outputs.sls_output }}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Notify UAT deployment failure
         if: ${{ failure() }}

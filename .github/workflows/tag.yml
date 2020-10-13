@@ -24,7 +24,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Deploy to production
-        run: npm run-script deploy
+        run: npm run-script deploy > ./deploy.txt
+      - name: Archive deployment artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: deploy
+          path: ./deploy.txt
       - name: Notify deployment completed successfully
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
