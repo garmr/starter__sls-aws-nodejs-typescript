@@ -37,7 +37,7 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(BITBUCKET_BRANCH////-)
+            - branch=$($BITBUCKET_BRANCH////-)
             - npm ci
             - sls config credentials --stage $(branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script deploy -- --stage=$(branch:0:7)  > ./deploy.txt
