@@ -1,10 +1,8 @@
-image: node:10.15.3
+image: node:12.19.0
 
 pipelines:
   default:
     - step:
-        caches:
-          - node
         script:
           - npm ci
           - npm run ci:test
@@ -30,3 +28,6 @@ pipelines:
             - npm run-script deploy -- --stage=$(branch:0:7)  > ./deploy.txt
           artifacts:
             - ./deploy.txt
+definitions:
+  caches:
+    npm: $HOME/.npm
