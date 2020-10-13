@@ -53,7 +53,7 @@ jobs:
           slack-channel: continue
           slack-text: |
             Deployed successfully to ${{ github.event.pull_request.head.ref }}
-            ${{ format(steps.info.outputs.sls_output,"\n") }}
+            ${{ format(steps.info.outputs.sls_output,"\\n") }}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Notify UAT deployment failure
         if: ${{ failure() }}
