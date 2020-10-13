@@ -3,29 +3,47 @@ image: node:12.19.0
 pipelines:
   default:
     - step:
+        caches:
+          - node
         script:
           - npm ci
           - npm run ci:test
+          - pipe: atlassian/slack-notify:0.3.6
+            variables:
+              WEBHOOK_URL: $SLACK_WEBHOOK_URL
+              MESSAGE: 'deploy result'
         artifacts:
           - ./coverage/*
           - ./output.json
   tags:
     v*:
       - step:
+          caches:
+            - node
           name: Build and release
           script:
             - npm ci
             - npm run-script deploy > ./deploy.txt
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: 'deploy result'
           artifacts:
             - ./deploy.txt
   pull-requests:
     '**':
       - step:
+          caches:
+            - node
           script:
             - branch=$(BITBUCKET_BRANCH////-)
             - npm ci
-            - serverless config credentials --stage $(branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - sls config credentials --stage $(branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script deploy -- --stage=$(branch:0:7)  > ./deploy.txt
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: 'pull request result'
           artifacts:
             - ./deploy.txt
 definitions:
