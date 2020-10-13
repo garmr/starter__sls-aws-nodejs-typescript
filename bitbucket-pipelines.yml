@@ -1,15 +1,32 @@
-# This is a sample build configuration for JavaScript.
-# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: node:10.15.3
+image: node:12.19.0
 
 pipelines:
   default:
     - step:
         caches:
           - node
-        script: # Modify the commands below to build your repository.
-          - npm install
-          - npm test
+        script:
+          - npm ci
+          - npm run ci:test
+        artifacts:
+          - ./coverage/*
+          - ./output.json
+  tags:
+    v*:
+      - step:
+          name: Build and release
+          script:
+            - npm ci
+            - npm run-script deploy > ./deploy.txt
+          artifacts:
+            - ./deploy.txt
+  pull-requests:
+    '**':
+      - step:
+          script:
+            - branch=$(BITBUCKET_BRANCH////-)
+            - npm ci
+            - serverless config credentials --stage $(branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - npm run-script deploy -- --stage=$(branch:0:7)  > ./deploy.txt
+          artifacts:
+            - ./deploy.txt
