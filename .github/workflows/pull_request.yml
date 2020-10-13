@@ -36,7 +36,7 @@ jobs:
         id: info
         run: |
           sls_output=$(npm run-script info -- --stage=${REF:0:7})
-          echo "::set-output name=sls_output::$(echo $sls_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\{0}&/g')"
+          echo "::set-output name=sls_output::$(echo $sls_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')"
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
       - run: echo ${{steps.info.outputs.sls_output}}
@@ -52,9 +52,9 @@ jobs:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
           slack-text: |
+            |
             Deployed successfully to ${{ github.event.pull_request.head.ref }}
-            ${{ format(steps.info.outputs.sls_output,"
-            ") }}
+            ${{steps.info.outputs.sls_output}}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Notify UAT deployment failure
         if: ${{ failure() }}
