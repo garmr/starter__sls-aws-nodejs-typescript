@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "jest --colors ./functions/.*.spec.ts",
-    "test:integration": "jest --colors ./functions/.*.integration.ts",
-    "ci:test": "jest --colors  --coverage=true ./functions/.*/__tests__/.*.ts",
+    "test:unit": "jest --colors --coverage=true ./functions/.*.spec.ts",
+    "test:integration": "jest --colors --coverage=true ./functions/.*.integration.ts",
+    "ci:test": "jest --colors  --outputFile=./output.json --json --coverage=true ./functions/.*/__tests__/.*.ts",
     "prettier": "prettier --write functions/**/*.ts",
     "deploy": "sls deploy --conceal",
     "remove": "sls remove",
