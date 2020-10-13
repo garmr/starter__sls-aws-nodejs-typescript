@@ -36,6 +36,7 @@ jobs:
         with:
           name: terminate
           path: ./remove.txt
+          retention-days: 5
       - name: Notify termination success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3

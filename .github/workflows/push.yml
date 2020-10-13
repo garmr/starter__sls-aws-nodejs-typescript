@@ -26,11 +26,13 @@ jobs:
         with:
           name: tests
           path: ./test.txt
+          retention-days: 5
       - name: Archive code coverage artifacts
         uses: actions/upload-artifact@v2
         with:
           name: coverage
           path: ./coverage
+          retention-days: 5
       - name: Notify test success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3

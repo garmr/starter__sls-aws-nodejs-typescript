@@ -30,6 +30,7 @@ jobs:
         with:
           name: deploy
           path: ./deploy.txt
+          retention-days: 5
       - name: Notify deployment completed successfully
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
