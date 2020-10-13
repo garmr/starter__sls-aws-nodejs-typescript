@@ -7,7 +7,7 @@ pipelines:
           - node
         script:
           - npm ci
-          - output=$(npm run ci:test)
+          - output=$((npm run ci:test)2>&1)
           - pipe: atlassian/slack-notify:0.3.6
             variables:
               WEBHOOK_URL: $SLACK_WEBHOOK_URL
@@ -20,14 +20,15 @@ pipelines:
       - step:
           caches:
             - node
-          name: Build and release
+          name: Release
           script:
             - npm ci
             - npm run-script deploy > ./deploy.txt
+            - output = $(cat ./deploy.txt)
             - pipe: atlassian/slack-notify:0.3.6
               variables:
                 WEBHOOK_URL: $SLACK_WEBHOOK_URL
-                MESSAGE: 'deploy result'
+                MESSAGE: $(echo $output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/')
           artifacts:
             - ./deploy.txt
   pull-requests:
@@ -40,10 +41,11 @@ pipelines:
             - npm ci
             - sls config credentials --stage $(branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script deploy -- --stage=$(branch:0:7)  > ./deploy.txt
+            - output = $(cat ./deploy.txt)
             - pipe: atlassian/slack-notify:0.3.6
               variables:
                 WEBHOOK_URL: $SLACK_WEBHOOK_URL
-                MESSAGE: 'pull request result'
+                MESSAGE: $(echo $output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' )
           artifacts:
             - ./deploy.txt
 definitions:
