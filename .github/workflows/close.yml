@@ -43,7 +43,7 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Successfully terminated  ${{ github.event.pull_request.head.ref }}
+          slack-text: Terminated ${{ github.event.pull_request.head.ref }}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Notify UAT termination failure
         if: ${{ failure() }}

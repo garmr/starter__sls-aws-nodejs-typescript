@@ -52,7 +52,7 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Deployed successfully to ${{ github.event.pull_request.head.ref }} ${{steps.info.outputs.sls_output}}
+          slack-text: Deployment OK ${{steps.info.outputs.sls_output}}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Notify UAT deployment failure
         if: ${{ failure() }}
@@ -60,5 +60,5 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Failed to deploy to ${{ github.event.pull_request.head.ref }}
+          slack-text: Deployment NOK ${{ github.event.pull_request.head.ref }}
           slack-optional-icon_emoji: ':gobelin_japonais:'
