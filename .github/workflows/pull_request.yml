@@ -36,7 +36,9 @@ jobs:
         id: info
         run: |
           sls_output=$(npm run-script info -- --stage=${REF:0:7})
-          echo "::set-output name=sls_output::$(echo $sls_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')"
+          echo $sls_output
+          echo XXXX
+          echo "::set-output name=sls_output::$(echo $sls_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/')"
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
       - run: echo ${{steps.info.outputs.sls_output}}
