@@ -37,7 +37,7 @@ jobs:
         run: |
           sls_output=$(npm run-script info -- --stage=${REF:0:7})
           echo $sls_output
-          echo "::set-output name=sls_output::$(echo $sed_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')"
+          echo "::set-output name=sls_output::$(echo $sls_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' | sed $'s/ GET/\\\n&/g')"
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
       - name: Notify UAT deployment completed successfully
