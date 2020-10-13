@@ -47,7 +47,7 @@ provider:
     VERSION: ${self:custom.serviceVersion}
 functions:
   producerTemplate100Status:
-    name: producer-template-100-${opt:stage, self:provider.stage, 'dev'}-status
+    name: ptemplate100-${opt:stage, self:provider.stage, 'dev'}-status
     description: # The description of your function.
     tags: # Function specific tags
       FUNCTION: status
@@ -58,7 +58,7 @@ functions:
           method: get
           path: 1.0/status
   producerTemplate100Version:
-    name: producer-template-100-${opt:stage, self:provider.stage, 'dev'}-version
+    name: ptemplate100-${opt:stage, self:provider.stage, 'dev'}-version
     description: # The description of your function.
     tags: # Function specific tags
       FUNCTION: version

@@ -23,17 +23,27 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+      - id: identify
+        run: |
+          export GIT_REF="${{ github.event.pull_request.head.ref  }}"
+          echo "::set-output name=git_ref::${GIT_REF////-}"
       - name: Terminate UAT
-        run: npm run-script remove -- --stage=${REF////-}
+        run: npm run-script remove -- --stage=${REF:0:7} > ./remove.txt
         env:
           REF: ${{ github.event.pull_request.head.ref }}
+      - name: Archive terminate artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: terminate
+          path: ./remove.txt
+          retention-days: 5
       - name: Notify termination success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: continue
-          slack-text: Successfully terminated  ${{ github.event.pull_request.head.ref }}
+          slack-text: Terminated ${{ github.event.pull_request.head.ref }}
           slack-optional-icon_emoji: ':soleil_avec_visage:'
       - name: Notify UAT termination failure
         if: ${{ failure() }}
