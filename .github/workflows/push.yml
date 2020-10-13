@@ -21,7 +21,12 @@ jobs:
         run: npm ci
       - name: Run tests
         id: test
-        run: npm test
+        run: npm run ci:test
+      - name: Archive tests artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tests
+          path: ./coverage
       - name: Notify test success
         if: ${{ success() }}
         uses: archive/github-actions-slack@v1.0.3
