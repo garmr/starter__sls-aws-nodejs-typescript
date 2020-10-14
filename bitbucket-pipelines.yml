@@ -10,7 +10,7 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
             - echo $branch
             - npm install
             - serverless config credentials --stage $(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
@@ -24,10 +24,16 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
+            - echo $branch
             - npm ci
             - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+            - info=$(npm run-script info -- --stage=$(echo $branch))
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: $(echo $info)
           artifacts:
             - deploy.txt
   default:
@@ -48,12 +54,17 @@ pipelines:
         caches:
           - node
         script:
-          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
           - echo $branch
           - npm ci
           - npm install -g serverless
           - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
           - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+          - info=$(npm run-script info -- --stage=$(echo $branch))
+          - pipe: atlassian/slack-notify:0.3.6
+            variables:
+              WEBHOOK_URL: $SLACK_WEBHOOK_URL
+              MESSAGE: $(echo $info)
         artifacts:
           - deploy.txt
     - step:
@@ -62,7 +73,7 @@ pipelines:
         caches:
           - node
         script:
-          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
           - echo $branch
           - npm ci
           - npm install -g serverless
@@ -101,12 +112,17 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
             - echo $branch
             - npm ci
             - npm install -g serverless
             - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+            - info=$(npm run-script info -- --stage=$(echo $branch))
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: $(echo $info)
           artifacts:
             - deploy.txt
       - step:
@@ -115,7 +131,7 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
             - echo $branch
             - npm ci
             - npm install -g serverless
