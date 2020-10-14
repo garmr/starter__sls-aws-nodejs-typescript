@@ -14,9 +14,9 @@ pipelines:
             - echo $branch
             - npm ci
             - serverless config credentials --stage $(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
-            - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+            - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
           artifacts:
-            - deploy.txt
+            - remove.txt
     deploy:
       - step:
           name: Deploy UAT stage
@@ -57,7 +57,6 @@ pipelines:
     - step:
         name: Terminate UAT
         trigger: manual
-        deployment: test
         caches:
           - node
         script:
