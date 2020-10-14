@@ -64,7 +64,7 @@ pipelines:
             variables:
               WEBHOOK_URL: $SLACK_WEBHOOK_URL
               MESSAGE: |
-                Deployed
+                Deployed $(echo $BITBUCKET_BRANCH)
                 $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
         artifacts:
           - deploy.txt
@@ -122,7 +122,7 @@ pipelines:
               variables:
                 WEBHOOK_URL: $SLACK_WEBHOOK_URL
                 MESSAGE: |
-                  Deployed
+                  Deployed $(echo $BITBUCKET_BRANCH)
                   $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
           artifacts:
             - deploy.txt
