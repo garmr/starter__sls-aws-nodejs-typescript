@@ -1,53 +1,72 @@
 image: node:12.19.0
 
 pipelines:
+  custom:
+    terminate:
+      - step:
+          name: Terminate UAT stage
+          deployment: UAT
+          caches:
+            - node
+          script:
+            - branch=$($BITBUCKET_BRANCH////-)
+            - echo $branch
+            - npm ci
+            - sls config credentials --stage $($branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - npm run-script deploy -- --stage=$($branch:0:7)  > ./deploy.txt
+            - output = $(cat ./deploy.txt)
+          artifacts:
+            - ./deploy.txt
+    deploy:
+      - step:
+          name: Deploy UAT stage
+          deployment: UAT
+          caches:
+            - node
+          script:
+            - branch=$($BITBUCKET_BRANCH////-)
+            - echo $branch
+            - npm ci
+            - sls config credentials --stage $($branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - npm run-script deploy -- --stage=$($branch:0:7)  > ./deploy.txt
+            - output = $(cat ./deploy.txt)
+          artifacts:
+            - ./deploy.txt
   default:
     - step:
+        name: Test branch
         caches:
           - node
         script:
           - npm ci
-          - output=$((npm run ci:test)2>&1)
-          - pipe: atlassian/slack-notify:0.3.6
-            variables:
-              WEBHOOK_URL: $SLACK_WEBHOOK_URL
-              MESSAGE: $(echo $output)
+          - npm run ci:test
         artifacts:
           - ./coverage/*
           - ./output.json
   tags:
     v*:
       - step:
+          name: Deploy to production
+          deployment: production
           caches:
             - node
-          name: Release
           script:
             - npm ci
             - npm run-script deploy > ./deploy.txt
-            - output = $(cat ./deploy.txt)
-            - pipe: atlassian/slack-notify:0.3.6
-              variables:
-                WEBHOOK_URL: $SLACK_WEBHOOK_URL
-                MESSAGE: $(echo $output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/')
           artifacts:
             - ./deploy.txt
   pull-requests:
     '**':
       - step:
+          name: Test branch
           caches:
             - node
           script:
-            - branch=$($BITBUCKET_BRANCH////-)
             - npm ci
-            - sls config credentials --stage $(branch:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
-            - npm run-script deploy -- --stage=$(branch:0:7)  > ./deploy.txt
-            - output = $(cat ./deploy.txt)
-            - pipe: atlassian/slack-notify:0.3.6
-              variables:
-                WEBHOOK_URL: $SLACK_WEBHOOK_URL
-                MESSAGE: $(echo $output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/' )
+            - npm run ci:test
           artifacts:
-            - ./deploy.txt
+            - ./coverage/*
+            - ./output.json
 definitions:
   caches:
     npm: $HOME/.npm
