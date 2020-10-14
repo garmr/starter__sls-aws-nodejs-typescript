@@ -10,7 +10,7 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
             - echo $branch
             - npm install
             - serverless config credentials --stage $(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
@@ -24,7 +24,7 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
             - echo $branch
             - npm ci
             - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
@@ -54,7 +54,7 @@ pipelines:
         caches:
           - node
         script:
-          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
           - echo $branch
           - npm ci
           - npm install -g serverless
@@ -73,7 +73,7 @@ pipelines:
         caches:
           - node
         script:
-          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
           - echo $branch
           - npm ci
           - npm install -g serverless
@@ -112,7 +112,7 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
             - echo $branch
             - npm ci
             - npm install -g serverless
@@ -131,7 +131,7 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:(feature|hotfix|bugfix)/::g  | sed s:/:-:g | cut -c1-7 )
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
             - echo $branch
             - npm ci
             - npm install -g serverless
