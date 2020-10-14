@@ -10,10 +10,10 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH}////-)
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g)
             - echo $branch
             - npm ci
-            - sls config credentials --stage $(echo ${branch}:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - serverless config credentials --stage $(echo ${branch}:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script deploy -- --stage=$(echo ${branch}:0:7)  > ./deploy.txt
             - output = $(cat ./deploy.txt)
           artifacts:
@@ -25,10 +25,10 @@ pipelines:
           caches:
             - node
           script:
-            - branch=$(echo ${BITBUCKET_BRANCH}////-)
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g)
             - echo $branch
             - npm ci
-            - sls config credentials --stage $(echo ${branch}:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - serverless config credentials --stage $(echo ${branch}:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script deploy -- --stage=$(echo ${branch}:0:7)  > ./deploy.txt
             - output = $(cat ./deploy.txt)
           artifacts:
