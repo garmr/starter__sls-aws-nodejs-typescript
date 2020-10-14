@@ -31,7 +31,7 @@ pipelines:
             - pipe: atlassian/slack-notify:0.3.6
               variables:
                 WEBHOOK_URL: $SLACK_WEBHOOK_URL
-                MESSAGE: $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
+                MESSAGE: Deployed \n $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
           artifacts:
             - deploy.txt
   default:
@@ -61,7 +61,7 @@ pipelines:
           - pipe: atlassian/slack-notify:0.3.6
             variables:
               WEBHOOK_URL: $SLACK_WEBHOOK_URL
-              MESSAGE: $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
+              MESSAGE: Deployed \n $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
         artifacts:
           - deploy.txt
     - step:
@@ -117,7 +117,7 @@ pipelines:
             - pipe: atlassian/slack-notify:0.3.6
               variables:
                 WEBHOOK_URL: $SLACK_WEBHOOK_URL
-                MESSAGE: $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
+                MESSAGE: Deployed \n $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
           artifacts:
             - deploy.txt
       - step:
