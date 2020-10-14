@@ -14,10 +14,9 @@ pipelines:
             - echo $branch
             - npm ci
             - serverless config credentials --stage $(echo ${branch}:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
-            - npm run-script deploy -- --stage=$(echo ${branch}:0:7)  > ./deploy.txt
-            - output = $(cat ./deploy.txt)
+            - npm run-script deploy -- --stage=$(echo ${branch}:0:7)  > deploy.txt
           artifacts:
-            - ./deploy.txt
+            - deploy.txt
     deploy:
       - step:
           name: Deploy UAT stage
@@ -29,10 +28,9 @@ pipelines:
             - echo $branch
             - npm ci
             - serverless config credentials --stage $(echo ${branch}:0:7) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
-            - npm run-script deploy -- --stage=$(echo ${branch}:0:7)  > ./deploy.txt
-            - output = $(cat ./deploy.txt)
+            - npm run-script deploy -- --stage=$(echo ${branch}:0:7)  > deploy.txt
           artifacts:
-            - ./deploy.txt
+            - deploy.txt
   default:
     - step:
         name: Test branch
@@ -42,8 +40,8 @@ pipelines:
           - npm ci
           - npm run ci:test
         artifacts:
-          - ./coverage/*
-          - ./output.json
+          - coverage/*
+          - output.json
   tags:
     v*:
       - step:
@@ -55,7 +53,7 @@ pipelines:
             - npm ci
             - npm run-script deploy > ./deploy.txt
           artifacts:
-            - ./deploy.txt
+            - deploy.txt
   pull-requests:
     '**':
       - step:
@@ -66,8 +64,8 @@ pipelines:
             - npm ci
             - npm run ci:test
           artifacts:
-            - ./coverage/*
-            - ./output.json
+            - coverage/*
+            - output.json
 definitions:
   caches:
     npm: $HOME/.npm
