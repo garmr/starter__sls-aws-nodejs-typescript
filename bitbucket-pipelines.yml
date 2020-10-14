@@ -41,6 +41,32 @@ pipelines:
         artifacts:
           - coverage/*
           - output.json
+    - step:
+        name: Deploy UAT
+        trigger: manual
+        deployment: test
+        caches:
+          - node
+        script:
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+          - npm ci
+          - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+          - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+        artifacts:
+          - deploy.txt
+    - step:
+        name: Terminate UAT
+        trigger: manual
+        deployment: test
+        caches:
+          - node
+        script:
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:/:-:g | cut -c1-7 )
+          - npm ci
+          - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+          - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
+        artifacts:
+          - remove.txt
   tags:
     v*:
       - step:
