@@ -1,0 +1,21 @@
+image: node:latest
+
+default:
+  before_script:
+    - npm ci
+
+cache:
+  paths:
+    - node_modules/
+
+test:
+  script:
+    - npm run ci:test
+
+deploy:
+  script:
+    - npm ci
+
+terminate:
+  script:
+    - npm ci
