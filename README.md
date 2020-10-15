@@ -60,6 +60,12 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 
 [Events that trigger workflows](https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows)
 
+### bitbucket
+
+[Pipelines](https://support.atlassian.com/bitbucket-cloud/docs/get-started-with-bitbucket-pipelines/)
+
+[Pipeline validator](https://bitbucket-pipelines.prod.public.atl-paas.net/validator.html)
+
 ### bash
 
 [String manipulation](https://tldp.org/LDP/abs/html/string-manipulation.html)

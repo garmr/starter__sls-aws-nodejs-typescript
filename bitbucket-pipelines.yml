@@ -1,0 +1,152 @@
+image: node:12.19.0
+options:
+  max-time: 5
+pipelines:
+  custom:
+    terminate:
+      - step:
+          name: Terminate UAT stage
+          deployment: test
+          caches:
+            - node
+          script:
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
+            - npm ci
+            - serverless config credentials --stage $(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
+          artifacts:
+            - remove.txt
+    deploy:
+      - step:
+          name: Deploy UAT stage
+          deployment: test
+          caches:
+            - node
+          script:
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
+            - npm ci
+            - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+            - info=$(npm run-script info -- --stage=$(echo $branch))
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: |
+                  Deployed
+                  $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
+          artifacts:
+            - deploy.txt
+  default:
+    - step:
+        name: Test branch
+        caches:
+          - node
+        script:
+          - npm ci
+          - npm run ci:test
+        artifacts:
+          - coverage/*
+          - output.json
+    - step:
+        name: Deploy UAT
+        trigger: manual
+        deployment: test
+        caches:
+          - node
+        script:
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
+          - npm ci
+          - npm install -g serverless
+          - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+          - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+          - info=$(npm run-script info -- --stage=$(echo $branch))
+          - pipe: atlassian/slack-notify:0.3.6
+            variables:
+              WEBHOOK_URL: $SLACK_WEBHOOK_URL
+              MESSAGE: |
+                Deployed $(echo $BITBUCKET_BRANCH)
+                $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
+        artifacts:
+          - deploy.txt
+    - step:
+        name: Terminate UAT
+        trigger: manual
+        caches:
+          - node
+        script:
+          - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
+          - npm ci
+          - npm install -g serverless
+          - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+          - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
+          - pipe: atlassian/slack-notify:0.3.6
+            variables:
+              WEBHOOK_URL: $SLACK_WEBHOOK_URL
+              MESSAGE: Terminated $(echo $BITBUCKET_BRANCH)
+        artifacts:
+          - remove.txt
+  tags:
+    v*:
+      - step:
+          name: Deploy to production
+          deployment: production
+          caches:
+            - node
+          script:
+            - npm ci
+            - npm run-script deploy > deploy.txt
+          artifacts:
+            - deploy.txt
+  pull-requests:
+    '**':
+      - step:
+          name: Test branch
+          caches:
+            - node
+          script:
+            - npm ci
+            - npm run ci:test
+          artifacts:
+            - coverage/*
+            - output.json
+      - step:
+          name: Deploy UAT
+          trigger: manual
+          deployment: test
+          caches:
+            - node
+          script:
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
+            - npm ci
+            - npm install -g serverless
+            - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+            - info=$(npm run-script info -- --stage=$(echo $branch))
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: |
+                  Deployed $(echo $BITBUCKET_BRANCH)
+                  $(echo $info | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
+          artifacts:
+            - deploy.txt
+      - step:
+          name: Terminate UAT
+          trigger: manual
+          caches:
+            - node
+          script:
+            - branch=$(echo ${BITBUCKET_BRANCH} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
+            - npm ci
+            - npm install -g serverless
+            - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: Terminated $(echo $BITBUCKET_BRANCH)
+          artifacts:
+            - remove.txt
+definitions:
+  caches:
+    npm: $HOME/.npm
