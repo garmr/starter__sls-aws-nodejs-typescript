@@ -36,7 +36,9 @@ deploy_UAT:
   script:
     - npm install -g serverless
     - branch=$(echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
-    - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+    - echo $branch
+    - echo ${AWS_ACCESS_KEY_ID}
+    - serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY} --stage=$(echo $branch)
     - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
   only:
     - merge_requests
