@@ -79,6 +79,10 @@ pipelines:
           - npm install -g serverless
           - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
           - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
+          - pipe: atlassian/slack-notify:0.3.6
+            variables:
+              WEBHOOK_URL: $SLACK_WEBHOOK_URL
+              MESSAGE: Terminated $(echo $BITBUCKET_BRANCH)
         artifacts:
           - remove.txt
   tags:
@@ -137,6 +141,10 @@ pipelines:
             - npm install -g serverless
             - serverless config credentials --stage=$(echo $branch) --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
             - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
+            - pipe: atlassian/slack-notify:0.3.6
+              variables:
+                WEBHOOK_URL: $SLACK_WEBHOOK_URL
+                MESSAGE: Terminated $(echo $BITBUCKET_BRANCH)
           artifacts:
             - remove.txt
 definitions:
