@@ -94,7 +94,7 @@ pipelines:
             - node
           script:
             - npm ci
-            - npm run-script deploy > deploy.txt
+            - npm run-script deploy -- --stage=prod > deploy.txt
           artifacts:
             - deploy.txt
   pull-requests:

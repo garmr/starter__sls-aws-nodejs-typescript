@@ -24,7 +24,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Deploy to production
-        run: npm run-script deploy > ./deploy.txt
+        run: npm run-script deploy -- --stage=prod > ./deploy.txt
       - name: Archive deployment artifacts
         uses: actions/upload-artifact@v2
         with:
