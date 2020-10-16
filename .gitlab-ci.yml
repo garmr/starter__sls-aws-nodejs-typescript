@@ -21,7 +21,7 @@ test:
 deploy:
   script:
     - npm install serverless -g
-    - serverless config credentials --stage=production --provider aws --key $(echo $K8S_SECRET_AWS_ACCESS_KEY_ID) --secret $(echo $K8S_SECRET_AWS_SECRET_ACCESS_KEY)
+    - serverless config credentials --stage=production --provider aws --key $(echo $AWS_ACCESS_KEY_ID) --secret $(echo $AWS_SECRET_ACCESS_KEY)
     - npm run-script deploy -- --stage=production  > deploy.txt
   artifacts:
     paths:
@@ -36,14 +36,12 @@ deploy:
 
 deploy_UAT:
   script:
-    - env
-    - echo $AWS_ACCESS_KEY_ID
-    - echo $K8S_SECRET_AWS_ACCESS_KEY_ID
     - npm install serverless -g
     - branch=$(echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
     - echo $branch
     - serverless config credentials --provider aws --key $(echo $AWS_ACCESS_KEY_ID) --secret $(echo $AWS_SECRET_ACCESS_KEY) --stage=$(echo $branch)
     - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+    - npm run-script info -- --stage=$(echo $branch)
   only:
     - merge_requests
   artifacts:
@@ -51,12 +49,13 @@ deploy_UAT:
       - deploy.txt
     expire_in: 1 week
   when: manual
+  needs: ['test']
 
 terminate:
   script:
     - npm install serverless -g
     - branch=$(echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
-    - serverless config credentials --stage=$(echo $branch) --provider aws --key $(echo $K8S_SECRET_AWS_ACCESS_KEY_ID) --secret $(echo $K8S_SECRET_AWS_SECRET_ACCESS_KEY)
+    - serverless config credentials --stage=$(echo $branch) --provider aws --key $(echo $AWS_ACCESS_KEY_ID) --secret $(echo $AWS_SECRET_ACCESS_KEY)
     - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
   when: manual
   only:
