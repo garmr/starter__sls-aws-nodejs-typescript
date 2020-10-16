@@ -19,7 +19,7 @@ test:
 
 deploy:
   script:
-    - npm run-script deploy -- --stage=production  > deploy.txt
+    - npm run-script deploy -- --stage=production
   artifacts:
     paths:
       - deploy.txt
@@ -34,7 +34,7 @@ deploy:
 deploy_UAT:
   script:
     - branch=$(echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
-    - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
+    - npm run-script deploy -- --stage=$(echo $branch)
   only:
     - merge_requests
   artifacts:
@@ -45,7 +45,7 @@ deploy_UAT:
 terminate:
   script:
     - branch=$(echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
-    - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
+    - npm run-script remove -- --stage=$(echo $branch)
   when: manual
   only:
     - merge_requests
