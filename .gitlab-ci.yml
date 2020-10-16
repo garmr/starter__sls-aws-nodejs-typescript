@@ -49,7 +49,7 @@ deploy_UAT:
     paths:
       - deploy.txt
     expire_in: 1 week
-  needs: ['test']
+  when: manual
 
 terminate:
   script:
