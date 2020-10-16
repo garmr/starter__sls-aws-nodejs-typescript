@@ -36,6 +36,7 @@ deploy:
 
 deploy_UAT:
   script:
+    - env
     - echo $AWS_ACCESS_KEY_ID
     - echo $K8S_SECRET_AWS_ACCESS_KEY_ID
     - npm install serverless -g
