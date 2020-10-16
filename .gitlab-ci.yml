@@ -38,11 +38,10 @@ deploy_UAT:
   script:
     - npm install serverless -g
     - branch=$(echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
-    - echo $branch
     - serverless config credentials --provider aws --key $(echo $AWS_ACCESS_KEY_ID) --secret $(echo $AWS_SECRET_ACCESS_KEY) --stage=$(echo $branch)
     - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
     - info=$(npm run-script info -- --stage=$(echo $branch)  | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
-    - 'curl -X POST -H ''Content-type: application/json'' --data ''{"text":"Deployed $(echo $branch)\n$(echo $info)"}'' https://hooks.slack.com/services/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'
+    - 'curl -X POST -H ''Content-type: application/json'' --data ''{"text":"Deployed $branch \n $info"}'' https://hooks.slack.com/services/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'
   only:
     - merge_requests
   artifacts:
@@ -57,7 +56,7 @@ terminate:
     - branch=$(echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME} | sed s:hotfix/::g | sed s:bugfix/::g | sed s:feature/::g  | sed s:/:-:g | cut -c1-7 )
     - serverless config credentials --stage=$(echo $branch) --provider aws --key $(echo $AWS_ACCESS_KEY_ID) --secret $(echo $AWS_SECRET_ACCESS_KEY)
     - npm run-script remove -- --stage=$(echo $branch)  > remove.txt
-    - 'curl -X POST -H ''Content-type: application/json'' --data ''{"text":"Terminated $(echo $branch)"}'' https://hooks.slack.com/services/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'
+    - 'curl -X POST -H ''Content-type: application/json'' --data ''{"text":"Terminated $branch"}'' https://hooks.slack.com/services/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'
   when: manual
   only:
     - merge_requests
