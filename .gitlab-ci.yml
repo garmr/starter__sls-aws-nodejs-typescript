@@ -42,7 +42,7 @@ deploy_UAT:
     - serverless config credentials --provider aws --key $(echo $AWS_ACCESS_KEY_ID) --secret $(echo $AWS_SECRET_ACCESS_KEY) --stage=$(echo $branch)
     - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
     - info=$(npm run-script info -- --stage=$(echo $branch)  | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/g')
-    - "curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"Deployed $(echo $branch)\n$(echo $info)\"}' https://hooks.slack.com/services/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"
+    - 'curl -X POST -H ''Content-type: application/json'' --data ''{"text":"Deployed $(echo $branch)\n$(echo $info)"}'' https://hooks.slack.com/services/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'
   only:
     - merge_requests
   artifacts:
