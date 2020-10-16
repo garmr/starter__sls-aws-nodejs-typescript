@@ -41,7 +41,7 @@ deploy_UAT:
     - echo $branch
     - echo $AWS_ACCESS_KEY_ID
     - echo $K8S_SECRET_AWS_ACCESS_KEY_ID
-    - serverless config credentials --stage=production --provider aws --key $(echo $K8S_SECRET_AWS_ACCESS_KEY_ID) --secret $(echo $K8S_SECRET_AWS_SECRET_ACCESS_KEY) --stage=$(echo $branch)
+    - serverless config credentials --provider aws --key $K8S_SECRET_AWS_ACCESS_KEY_ID --secret $K8S_SECRET_AWS_SECRET_ACCESS_KEY --stage=$(echo $branch)
     - npm run-script deploy -- --stage=$(echo $branch)  > deploy.txt
   only:
     - merge_requests
