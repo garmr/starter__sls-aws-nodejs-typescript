@@ -49,7 +49,6 @@ deploy_UAT:
       - deploy.txt
     expire_in: 1 week
   when: manual
-  needs: ['test']
 
 terminate:
   script:
