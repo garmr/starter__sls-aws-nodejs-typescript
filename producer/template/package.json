@@ -1,0 +1,28 @@
+{
+  "name": "producer-template",
+  "version": "1.0.0",
+  "description": "Serverless webpack example using Typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest --colors --coverage=true ./functions/.*.spec.ts",
+    "test:integration": "jest --colors --coverage=true ./functions/.*.integration.ts",
+    "test:ci": "jest --colors  --outputFile=./output.json --json --coverage=true ./functions/.*/__tests__/.*.ts",
+    "deploy": "npx sls deploy --conceal",
+    "remove": "npx sls remove",
+    "info": "npx sls info"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.63"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "env FORCE_COLOR=1 lint-staged -r"
+    }
+  },
+  "author": "Romain Giacalone <romain.m.giacalone@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "source-map-support": "^0.5.19"
+  }
+}

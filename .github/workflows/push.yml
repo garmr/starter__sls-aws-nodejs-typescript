@@ -2,7 +2,7 @@ name: Push branch
 on:
   push:
     branches:
-      - '*'
+      - '**'
       - '!master'
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Run tests
-        run: npm run ci:test
+        run: npx jest --ci
       - name: Archive tests artifacts
         uses: actions/upload-artifact@v2
         with:

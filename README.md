@@ -69,3 +69,14 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 ### bash
 
 [String manipulation](https://tldp.org/LDP/abs/html/string-manipulation.html)
+
+## Kind remember
+
+update packages
+
+```
+npm install npm-check-updates -g;
+ncu.cmd -u --loglevel verbose --packageFile package.json && npm audit;
+```
+
+When using git bash, remember that it is not a TTY command line tool.

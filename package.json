@@ -4,14 +4,15 @@
   "description": "Serverless webpack example using Typescript",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "jest --colors --coverage=true ./functions/.*.spec.ts",
-    "test:integration": "jest --colors --coverage=true ./functions/.*.integration.ts",
-    "ci:test": "jest --colors  --outputFile=./output.json --json --coverage=true ./functions/.*/__tests__/.*.ts",
-    "prettier": "prettier --write functions/**/*.ts",
-    "deploy": "sls deploy --conceal",
-    "remove": "sls remove",
-    "info": "sls info"
+    "test": "npm run producer/template:test",
+    "producer/template:test": "cd producer/template && npm run test",
+    "producer/template:test:unit": "cd producer/template && npm run test:unit",
+    "producer/template:test:integration": "cd producer/template && npm run test:integration",
+    "producer/template:test:ci": "cd producer/template && npm run ci:unit",
+    "producer/template:prettier": "cd producer/template && prettier --write functions/**/*.ts",
+    "producer/template:deploy": "cd producer/template && npm run deploy",
+    "producer/template:remove": "cd producer/template && npm run remove",
+    "producer/template:info": "cd producer/template && npm run info"
   },
   "husky": {
     "hooks": {
@@ -45,7 +46,7 @@
     "webpack": "^4.44.2",
     "webpack-node-externals": "^2.5.2"
   },
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "author": "Romain Giacalone <romain.m.giacalone@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "source-map-support": "^0.5.19"

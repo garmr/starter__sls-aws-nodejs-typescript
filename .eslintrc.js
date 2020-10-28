@@ -1,11 +1,9 @@
 module.exports = {
 "root": true,
-"extends": [
-  'eslint:recommended',
-  'plugin:@typescript-eslint/eslint-recommended',
-  'plugin:@typescript-eslint/recommended',
-  'prettier/@typescript-eslint',
-  'plugin:prettier/recommended'
+extends: [
+  'airbnb-typescript',
+  "prettier",
+  "prettier/@typescript-eslint"
 ],
 "env": {
   "node": true
