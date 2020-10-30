@@ -70,6 +70,14 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 
 [String manipulation](https://tldp.org/LDP/abs/html/string-manipulation.html)
 
+## SDLC CUT stage
+
+[Serverless offline](https://docs.expo.io/workflow/debugging/)
+
+### start local
+
+- `npm run start`
+
 ## Kind remember
 
 update packages
