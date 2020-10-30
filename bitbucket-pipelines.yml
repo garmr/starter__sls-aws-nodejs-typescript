@@ -44,7 +44,7 @@ pipelines:
           - jest
         script:
           - npm ci
-          - npx jest --ci
+          - npm run test:ci
         artifacts:
           - coverage/*
           - output.json

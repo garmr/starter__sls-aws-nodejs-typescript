@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run producer/template:test",
+    "test:ci": "npm run producer/template:test:ci",
     "producer/template:test": "cd producer/template && npm run test",
     "producer/template:test:unit": "cd producer/template && npm run test:unit",
     "producer/template:test:integration": "cd producer/template && npm run test:integration",
-    "producer/template:test:ci": "cd producer/template && npm run ci:unit",
+    "producer/template:test:ci": "cd producer/template && npm run test:ci",
     "producer/template:prettier": "cd producer/template && prettier --write functions/**/*.ts",
     "producer/template:deploy": "cd producer/template && npm run deploy",
     "producer/template:remove": "cd producer/template && npm run remove",

@@ -7,7 +7,7 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest --colors --coverage=true ./functions/.*.spec.ts",
     "test:integration": "jest --colors --coverage=true ./functions/.*.integration.ts",
-    "test:ci": "jest --colors  --outputFile=./output.json --json --coverage=true ./functions/.*/__tests__/.*.ts",
+    "test:ci": "jest --colors  --ci --outputFile=./output.json --json --coverage=true ./functions/.*/__tests__/.*.ts",
     "deploy": "npx serverless deploy --conceal",
     "remove": "npx serverless remove",
     "info": "npx serverless info",
