@@ -8,17 +8,14 @@
     "test:unit": "jest --colors --coverage=true ./functions/.*.spec.ts",
     "test:integration": "jest --colors --coverage=true ./functions/.*.integration.ts",
     "test:ci": "jest --colors  --outputFile=./output.json --json --coverage=true ./functions/.*/__tests__/.*.ts",
-    "deploy": "npx sls deploy --conceal",
-    "remove": "npx sls remove",
-    "info": "npx sls info"
+    "deploy": "npx serverless deploy --conceal",
+    "remove": "npx serverless remove",
+    "info": "npx serverless info",
+    "package": "npx serverless package"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.63"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "env FORCE_COLOR=1 lint-staged -r"
-    }
+    "@types/aws-lambda": "^8.10.63",
+    "eslint-plugin-import": "^2.22.1"
   },
   "author": "Romain Giacalone <romain.m.giacalone@gmail.com>",
   "license": "MIT",

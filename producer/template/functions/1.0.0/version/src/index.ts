@@ -10,3 +10,5 @@ export const handler: AWSLambda.Handler = async (): Promise<any> => {
     body: JSON.stringify(response),
   };
 };
+
+export default handler;
