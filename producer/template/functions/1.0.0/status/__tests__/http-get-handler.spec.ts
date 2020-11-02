@@ -1,10 +1,6 @@
-import { HTTPGetHandler } from '../src/http-get-handler';
+import HTTPGetHandler from '../src/http-get-handler';
 
-var unitUnderTest: HTTPGetHandler;
-
-beforeEach(() => {
-  unitUnderTest = new HTTPGetHandler();
-});
+beforeEach(() => {});
 
 describe('Status producer', () => {
   // UnitOfWork_StateUnderTest_ExpectedBehavior
@@ -13,7 +9,7 @@ describe('Status producer', () => {
       // Arrange
 
       // Act
-      const result = await unitUnderTest.handle();
+      const result = await HTTPGetHandler.handle();
 
       // Assert
       expect(result).toHaveProperty('dependency1');

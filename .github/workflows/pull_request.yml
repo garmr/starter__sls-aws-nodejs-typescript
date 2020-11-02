@@ -39,7 +39,6 @@ jobs:
           echo "::set-output name=sls_output::$(echo $sls_output | sed -e 's/.*endpoints:\(.*\)functions:.*/\1/')"
         env:
           REF: ${{ steps.identify.outputs.git_ref }}
-      - run: echo ${{steps.info.outputs.sls_output}}
       - name: Archive deployment artifacts
         uses: actions/upload-artifact@v2
         with:

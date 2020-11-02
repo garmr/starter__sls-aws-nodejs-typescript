@@ -1,0 +1,9 @@
+{
+  "eslint": {
+    "enabled": true,
+    "files": "./**/*.{ts,tsx,js,jsx}"
+  },
+  "typescript": {
+    "configFile": "../../tsconfig.json"
+  }
+}
