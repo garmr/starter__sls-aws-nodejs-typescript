@@ -2,7 +2,7 @@ name: Push branch
 on:
   push:
     branches:
-      - '*'
+      - '**'
       - '!master'
 
 jobs:
@@ -20,18 +20,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Run tests
-        run: npm run ci:test
+        run: npm run test:ci
       - name: Archive tests artifacts
         uses: actions/upload-artifact@v2
         with:
           name: tests
-          path: ./output.json
+          path: output.json
           retention-days: 5
       - name: Archive code coverage artifacts
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: ./coverage
+          path: coverage
           retention-days: 5
       - name: Notify test success
         if: ${{ success() }}
