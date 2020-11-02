@@ -72,11 +72,17 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 
 ## SDLC CUT stage
 
-[Serverless offline](https://docs.expo.io/workflow/debugging/)
+[Serverless offline](https://github.com/dherault/serverless-offline)
+
+SDLC CUT will rely on serverless offline plugin. Each `package.json` will implement start script to run the plugin, ex: `npx serverless offline` Master `package.json` will link to services `package.json`, ex (given the service is located under `producer/template` directory):
+
+```
+cd producer/template && npm run start
+```
 
 ### start local
 
-- `npm run start`
+- `npm run producer/template:start`
 
 ## Kind remember
 
