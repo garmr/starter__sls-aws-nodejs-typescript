@@ -69,3 +69,28 @@ Other will follow this [TypeScript Style Guide and Coding Conventions](https://g
 ### bash
 
 [String manipulation](https://tldp.org/LDP/abs/html/string-manipulation.html)
+
+## SDLC CUT stage
+
+[Serverless offline](https://github.com/dherault/serverless-offline)
+
+SDLC CUT will rely on serverless offline plugin. Each `package.json` will implement start script to run the plugin, ex: `npx serverless offline` Master `package.json` will link to services `package.json`, ex (given the service is located under `producer/template` directory):
+
+```
+cd producer/template && npm run start
+```
+
+### start local
+
+- `npm run producer/template:start`
+
+## Kind remember
+
+update packages
+
+```
+npm install npm-check-updates -g;
+ncu.cmd -u --loglevel verbose --packageFile package.json && npm audit;
+```
+
+When using git bash, remember that it is not a TTY command line tool.
